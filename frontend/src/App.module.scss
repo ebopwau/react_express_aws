@@ -1,0 +1,14 @@
+.translate {
+    display: flex;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 200px 10px 0px 10px;
+
+    &__wrapper {
+        flex: 1;
+
+        &_divider {
+            flex: 0 0 5%;
+        }
+    }
+}
