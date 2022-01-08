@@ -32,8 +32,12 @@ function translateText(obj) {
     });
 }
 app.post('/api', (req, res) => {
-    console.log(req.body);
-    translateText(req.body).then((data) => {
+    const request = {
+        from: req.body.from || 'auto',
+        to: req.body.to,
+        value: req.body.value
+    };
+    translateText(request).then((data) => {
         res.json({
             message: data
         });

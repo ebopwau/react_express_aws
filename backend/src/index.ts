@@ -1,5 +1,6 @@
 import express from 'express'
 import AWS from 'aws-sdk'
+import {RequestParams, ResolveData} from './types/index.props'
 
 AWS.config.update({region: "us-east-1"});
 
@@ -14,14 +15,14 @@ app.listen(PORT, () => {
 
 app.use(express.json());
 
-function translateText(obj:any) {
+function translateText(obj:RequestParams) {
     const params = {
         SourceLanguageCode: obj.from || 'auto',
         TargetLanguageCode: obj.to,
         Text: obj.value
     };
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: (arg0: ResolveData) => void, reject) => {
         translate.translateText(params, function (err, data) {
             if (err) {
                 console.log(err, err.stack);
@@ -34,10 +35,13 @@ function translateText(obj:any) {
 }
 
 app.post('/api', (req, res) => {
+    const request = {
+        from: req.body.from || 'auto',
+        to: req.body.to,
+        value: req.body.value
+    }
 
-    console.log(req.body)
-
-    translateText(req.body).then((data) =>  {
+    translateText(request).then((data) =>  {
         res.json({
             message: data
         })

@@ -3,14 +3,21 @@ import React from "react";
 import styles from './TranslateResult.module.scss'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import {Spinner} from "../UI/Spinner";
 
 interface ITranslateResult {
-    translateResult: string
+    translateResult: string,
+    isLoading: boolean
 }
 
-export const TranslateResult = ({translateResult}:ITranslateResult) => {
+export const TranslateResult = ({translateResult, isLoading}:ITranslateResult) => {
     return (
         <div className={styles['result']}>
+            {
+                isLoading && <div className={styles['loader']}>
+                    <Spinner />
+                </div>
+            }
             <Box
                 component="form"
                 sx={{
@@ -23,7 +30,7 @@ export const TranslateResult = ({translateResult}:ITranslateResult) => {
                     id="outlined-multiline-static"
                     multiline
                     rows={10}
-                    defaultValue={translateResult}
+                    defaultValue={isLoading? '' : translateResult}
                     disabled
                 />
             </Box>

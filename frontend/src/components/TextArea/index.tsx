@@ -8,17 +8,22 @@ import api from '../../api'
 import {ITextArea, Iresponse} from './TextArea.props'
 
 
-export const TextArea = ({setTranslateResult, requestData}:ITextArea) => {
-    const [value, setValue] = useState<string>('')
+export const TextArea = ({setTranslateResult, requestData, toggleLoading}:ITextArea) => {
+    const [value, setValue] = useState<string>('');
 
     const valueHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
 
     useEffect(() => {
-        if (!value) return
+        if (!value) {
+            setTranslateResult('')
+            return
+        }
 
         const debounce = setTimeout(() => {
+            toggleLoading(true);
+
             const params = {
                 from: requestData.from,
                 to: requestData.to,
@@ -27,6 +32,7 @@ export const TextArea = ({setTranslateResult, requestData}:ITextArea) => {
 
             api.translate(params).then((data:Iresponse) => {
               setTranslateResult(data.TranslatedText)
+              toggleLoading(false)
             })
         },900)
 
